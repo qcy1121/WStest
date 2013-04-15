@@ -15,7 +15,7 @@ myCrawler.initialPath = "/";
 myCrawler.initialPort = 80;
 myCrawler.initialProtocol = "http";
 myCrawler.downloadUnsupported= false;
-myCrawler.scanSubdomains
+myCrawler.scanSubdomains = true;
 var parentPath="data/";
 //var queue= myCrawler.queue;
 //caoliuhost http://cl.tedx.ee/index.php
