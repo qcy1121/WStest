@@ -10,9 +10,9 @@
 var Crawler = require("node-simplecrawler");
 var fs =require("fs");
 var myFile = require("../myLib/jsFile.js").jsFile;
-var MyReader = require("./myReader.js");
+//var MyReader = require("./myReader.js");
 var myCrawler = new Crawler();
-var myReader = new MyReader();
+//var myReader = new MyReader();
 //Nonstandard port? HTTPS? Want to start archiving a specific path? No problem:
 myCrawler.host = "www.npc.gov.cn";
 myCrawler.initialPath = "/";
@@ -21,13 +21,13 @@ myCrawler.initialProtocol = "http";
 myCrawler.downloadUnsupported= false;
 myCrawler.scanSubdomains=true;
 myCrawler.stripWWWDomain = true;
-var parentPath="data/";
+var parentPath="../data/";
 
 myCrawler.on("fetchcomplete",function(queueItem, responseBuffer, response){
     var fileUrl=queueItem.url.replace(/:/,"/");
     console.log("fetch" +fileUrl);
-
-    if(count>2)myReader.read(responseBuffer.toString());
+   if(count>2) writeFile(fileUrl,responseBuffer);
+    //if(count>2)myReader.read(responseBuffer.toString());
 });
 
 myCrawler.on("queueadd", function(queueItem){
@@ -65,6 +65,19 @@ var isHtml = function(url){
     var htmlReg = /htm$/;
     return htmlReg.test(url);
 };
+
+var writeFile = function(fileUrl,responseBuffer){
+    var filePath=parentPath+"/"+fileUrl.substr(0,fileUrl.lastIndexOf("/"));
+    var fileName=fileUrl.substr(fileUrl.lastIndexOf("/"));
+    if(!fs.exists(filePath)){
+        myFile.mkdirSync(filePath, function(err) {
+            if (err)
+                return console.log(err);
+        });
+    }
+    fs.writeFile(filePath+"/"+fileName,responseBuffer);
+
+}
 
 myCrawler.start();
 

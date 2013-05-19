@@ -1,10 +1,4 @@
-/**
- * Created with JetBrains WebStorm.
- * User: Acer
- * Date: 12-11-29
- * Time: 下午11:09
- * To change this template use File | Settings | File Templates.
- */
+
 var fs = require('fs');
 
 var myFile = {
@@ -84,6 +78,7 @@ var myFile = {
             try {
                 iterator(dir, folders, files);
             } catch (e) {
+                console.log(e);
             } finally {
                 return {
                     folders:folders,
