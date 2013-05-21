@@ -1,7 +1,7 @@
 // Print all of the news items on hackernews
 var jsdom = require("jsdom");
 var fs = require("fs"),
- jquery = fs.readFileSync("lib/jquery-1.9.1.js").toString(),
+ jquery = fs.readFileSync("../lib/jquery-1.9.1.js").toString(),
   MyPage = require("./moudule/page.js"),
  staticjs = require("./staticjs.js"),
  cheerio = require('cheerio'),
@@ -12,8 +12,6 @@ var MyReader = function () {
 
 };
 
-module.exports = MyReader;
-
 MyReader.prototype.read= function(html){
     jsdom.env({
         html: html,
@@ -21,6 +19,7 @@ MyReader.prototype.read= function(html){
         //scripts: ["http://code.jquery.com/jquery.js"],
         done: function (errors, window) {
             var $ = window.$;
+            setEnv($);
             //type,page = new MyPage();
             if($("#morebg").html()){
                 type = staticjs.PageType.BODY;
@@ -29,8 +28,9 @@ MyReader.prototype.read= function(html){
                 var body = $("#morebg").html();
                 var pageContent = staticjs.PageContent;
                 for( var idx in pageContent){
-                    var reg = pageContent[idx];
-                    body = body.replaceAll(reg,"");
+                    var reg = new RegExp(pageContent[idx],"gm");
+                    //"test".replace
+                    body = body.replace(reg,"");
                 }
 
                 console.log(body);
@@ -41,6 +41,18 @@ MyReader.prototype.read= function(html){
 
         }
     });
+    this.$ ;
+    var setEnv= function($){
+        this.$ = $;
+    }
+
+    var readPgcontent= function(body){
+        var $ = this.$;
+        if($("#pgcontent").html()){
+            var ps = $("#pgcontent.p");
+
+        }
+    }
 }
 /*MyReader.prototype.read = function(html){
 var $ = cheerio.load(html),
@@ -56,3 +68,6 @@ var $ = cheerio.load(html),
     }
 
 }*/
+
+
+exports.MyReader = MyReader;

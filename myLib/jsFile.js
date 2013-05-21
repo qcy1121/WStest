@@ -55,7 +55,7 @@ var myFile = {
 */
 
 /*取得给定目录下的所有目录与文件*/
-    getAllFoldersAndFiles:function () {
+    getAllFoldersAndFiles:function (dir) {
         function iterator(url, folders, files) {
             var stat = fs.statSync(url);
             if (stat.isDirectory()) {
@@ -73,7 +73,7 @@ var myFile = {
             }
         }
 
-        return function (dir) {
+        function getAll(dir) {
             var folders = [], files = [];
             try {
                 iterator(dir, folders, files);
@@ -86,6 +86,8 @@ var myFile = {
                 }
             }
         }
+        return getAll(dir);
+
     },
 
 

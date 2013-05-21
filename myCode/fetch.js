@@ -25,8 +25,8 @@ var parentPath="../data/";
 
 myCrawler.on("fetchcomplete",function(queueItem, responseBuffer, response){
     var fileUrl=queueItem.url.replace(/:/,"/");
-    console.log("fetch" +fileUrl);
-   if(count>2) writeFile(fileUrl,responseBuffer);
+    //console.log("fetch" +fileUrl);
+   if(count>=1) writeFile(fileUrl,responseBuffer);
     //if(count>2)myReader.read(responseBuffer.toString());
 });
 
@@ -39,19 +39,23 @@ var isNeeded = function(url){
     var htmlUrl = /npc.gov.cn\/npc/;
     switch (count){
         case 0:
-            if(htmlUrl.test(url))count =1;
-            return true;
+            if(htmlUrl.test(url)){count =1;
+            }
+            break;
         case 1:
             htmlUrl = /npc.gov.cn\/npc\/flsyywd/;
-            if(htmlUrl.test(url))count =2;
+            if(htmlUrl.test(url)){count =2;}
             break;
+
         case 2:
-            htmlUrl = /npc.gov.cn\/npc\/flsyywd\/xianfa/;
-            if(htmlUrl.test(url))count =3;
+            htmlUrl = /npc.gov.cn\/npc\/flsyywd/;
+            //if(htmlUrl.test(url)){count =2;}
             break;
+        /*
         case 3:
             htmlUrl = /npc.gov.cn\/npc\/flsyywd\/xianfa/;
             break;
+            */
     }
 
    // var htmlUrl = /npc.gov.cn\/npc\/flsyywd\/xianfa/;
@@ -76,7 +80,7 @@ var writeFile = function(fileUrl,responseBuffer){
         });
     }
     fs.writeFile(filePath+"/"+fileName,responseBuffer);
-
+    console.log("writefile: "+filePath+"/"+fileName);
 }
 
 myCrawler.start();
