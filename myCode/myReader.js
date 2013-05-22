@@ -20,6 +20,7 @@ MyReader.prototype.read= function(html){
         done: function (errors, window) {
             var $ = window.$;
             setEnv($);
+            /*
             //type,page = new MyPage();
             if($("#morebg").html()){
                 type = staticjs.PageType.BODY;
@@ -37,6 +38,10 @@ MyReader.prototype.read= function(html){
             }else if($("span.div_text").html()){
                   type = staticjs.PageType.CATALOGUE;
                 console.log( $("span.div_text").html());
+            }else
+            */
+            if($("#pgcontent").html()){
+                readPgcontent($("#pgcontent"));
             }
 
         }
@@ -48,10 +53,14 @@ MyReader.prototype.read= function(html){
 
     var readPgcontent= function(body){
         var $ = this.$;
-        if($("#pgcontent").html()){
-            var ps = $("#pgcontent.p");
+        var content = body.get(0);
+        var array =content.children;
+            for(var i in array){
+                console.log(array[i].innerHTML);
+            }
 
-        }
+
+
     }
 }
 /*MyReader.prototype.read = function(html){
