@@ -5,11 +5,11 @@ var staticjs = require("../myCode/staticjs.js"),
 for( var idx in pageContent){
 
     console.log(idx +" mapping : "+pageContent[idx]);
-    console.log("pangeContent test end");
+    console.log("pageContent test end");
 }
 
 for(var idx in pageType){
-    console.log("pangeType test start");
+    console.log("pageType test start");
     console.log(idx +" mapping : "+pageType[idx]);
     console.log("pageType test end");
 }

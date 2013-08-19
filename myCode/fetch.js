@@ -26,8 +26,8 @@ var parentPath="../data/";
 myCrawler.on("fetchcomplete",function(queueItem, responseBuffer, response){
     var fileUrl=queueItem.url.replace(/:/,"/");
     //console.log("fetch" +fileUrl);
-   if(count>=1) writeFile(fileUrl,responseBuffer);
-    //if(count>2)myReader.read(responseBuffer.toString());
+   //if(count>=1) writeFile(fileUrl,responseBuffer);
+    if(count>=1)myReader.read(fileUrl,responseBuffer.toString());
 });
 
 myCrawler.on("queueadd", function(queueItem){
