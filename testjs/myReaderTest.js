@@ -18,11 +18,11 @@ for(var idx in files){
 var test2 = function(){
     var fileP = //"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2010-04/14/content_1567091.htm";
     //"../data/http/www.npc.gov.cn/npc/flsyywd/xianfa/node_1851.htm";
-    //../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2002-07/11/content_297478.htm
-    //../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2001-08/01/content_140411.htm
-    //../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2000-11/29/content_8461.htm
-    //../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2000-10/20/content_8435.htm
-"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/node_2165.htm";
+    //"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2002-07/11/content_297478.htm";
+    "../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2001-08/01/content_140411.htm";
+    //"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2000-11/29/content_8461.htm";
+    //"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/2000-10/20/content_8435.htm";
+//"../data//http/www.npc.gov.cn/npc/flsyywd/xianfa/node_2165.htm" ;
 var file = fs.readFileSync(fileP);
 myReader.read(fileP,file);
 
