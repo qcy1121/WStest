@@ -1,5 +1,5 @@
 //var PageType =(function(){
-var type = new function(){};
+var type = function(){};
 type.prototype = {
 CATALOGUE : "CATALOGUE",
 BOYE : "BODY",
@@ -9,7 +9,7 @@ NODE : "NODE"
 //})();
 exports.PageType = type;
 //var PageContent = (function(){
-var content = new function(){};
+var content = function(){};
 content.prototype = {
   BLACKS : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
   MsoPlainText : 'class="MsoPlainText" style="TEXT-INDENT: 27pt"',

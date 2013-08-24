@@ -4,17 +4,18 @@ var fs = require("fs"),
     jquery = fs.readFileSync("../lib/jquery-1.9.1.js").toString(),
     MyPage = require("./moudule/page.js").MyPage,
     staticjs = require("./staticjs.js"),
-    cheerio = require('cheerio'),
+    //cheerio = require('cheerio'),
     pageType = staticjs.PageType;
 
 var MyReader = function () {
 
 
 };
-var isNode = function (fileName) {
+MyReader.prototype.$ = null;
+MyReader.prototype.isNode = function (fileName) {
     var nodeReg = /\/node_\d+.htm/;
     return nodeReg.test(fileName);
-}
+};
 MyReader.prototype.readNode = function (fileUrl,  $) {
     var page = new MyPage();
     page.title = $("div_topline").context;
@@ -25,7 +26,7 @@ MyReader.prototype.readNode = function (fileUrl,  $) {
         var a = as[i];
         console.log(a.textContent+"  "+a.href);
     }
-}
+};
 MyReader.prototype.readContent = function(fileUrl,$){
     var type;//,page = new MyPage();
     if ($("#morebg").length) {
@@ -87,7 +88,8 @@ MyReader.prototype.read = function (fileUrl, file ){
         //scripts: ["http://code.jquery.com/jquery.js"],
         done: function (errors, window) {
             var $ = window.$;
-            if (isNode(fileUrl)) {
+            reader.$ = $;
+            if (reader.isNode(fileUrl)) {
                 reader.readNode(fileUrl,$);
             } else {
                 console.log("fileUrl: " + fileUrl);
@@ -99,7 +101,7 @@ MyReader.prototype.read = function (fileUrl, file ){
 
 MyReader.prototype.readMorebg=function($){
 
-    var info = $("#morebg.info"),title = $("#morebg.tit");
+    var info = $(".info"),title = $(".tit");
     console.log("title"+this.readTitle(title));
     console.log("info:" +this.readInfo(info));
     var body = $("#pgcontent");
@@ -111,30 +113,18 @@ MyReader.prototype.readMorebg=function($){
 MyReader.prototype.readPgcontentInMoreBg = function(body){
     //body.remove(".source");
     //body.remove(".editor");
-    body.contents().filter(function() {
-        return this.nodeType == 3;
-    }).wrap('<p></p>').end().filter('br').remove();
-    console.log(body.html());
-    body.children(function(child){
-        //if(!child)
-        if(child.tagName=="P" ){
-            console.log(child.textContent);
-        }else if(child.tagName =="BR"){
-            var newChild = children[i-1];
+    var $ = this.$;
+    body.children(".source,.editor").remove();
+     body.contents().filter(function() {
+         //console.log();
+         return this.nodeType == 3 ;//&&this.parentNode.tagName != "P";
+     }).wrap('<div class="textContentDiv"></div>').end().filter('br').remove();
 
-
-
-
-
-
-            if(newChild)
-            console.log(children[i-1].textContent);
-        }else{
-            console.log(child.tagName+"   "+child._nodeName);
-        }
-        //console.log(child.tagName+" : "+child.textContent);
+     console.log(body.html());
+    body.children("div.textContentDiv").each(function(){
+        var child = this,text = $.trim(child.textContent);
+           if(text)console.log(text);
     })
-   // body.remove();
 }
 MyReader.prototype.readPgcontent = function(body){
     var content = body.get(0);
@@ -168,13 +158,22 @@ MyReader.prototype.readTitle = function(body){
 MyReader.prototype.readInfo = function(body){
     if(body.length<1)return;
     var dateReg = /日期:[\d\w]+浏览/;
-    var matches = body.textContent.match(dateReg),res;
+    var matches = body.text().match(dateReg),res;
     if(matches){
         res = matches[0];
-       // body.remove();
     }
 
 return res;
+}
+MyReader.prototype.readSource = function(body){
+    if(body.length<1)return;
+    var dateReg = /日期:[\d\w]+浏览/;
+    var matches = body.textContent.match(dateReg),res;
+    if(matches){
+        res = matches[0];
+    }
+
+    return res;
 }
 /*MyReader.prototype.read = function(html){
  var $ = cheerio.load(html),
