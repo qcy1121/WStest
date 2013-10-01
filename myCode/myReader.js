@@ -89,10 +89,10 @@ MyReader.prototype.read = function (fileUrl, file ){
         done: function (errors, window) {
             var $ = window.$;
             reader.$ = $;
+            console.log("fileUrl: " + fileUrl);
             if (reader.isNode(fileUrl)) {
                 reader.readNode(fileUrl,$);
             } else {
-                console.log("fileUrl: " + fileUrl);
                 reader.readContent(fileUrl,$);
             }
         }
@@ -115,17 +115,31 @@ MyReader.prototype.readPgcontentInMoreBg = function(body){
     //body.remove(".editor");
     var $ = this.$;
     body.children(".source,.editor").remove();
-     body.contents().filter(function() {
-         //console.log();
-         return this.nodeType == 3 ;//&&this.parentNode.tagName != "P";
-     }).wrap('<div class="textContentDiv"></div>').end().filter('br').remove();
+    var brChildren = body.children("br");
+    if(brChildren.length)this.readBRTag(body);
+    else this.readNoBRTag(body);
+}
+MyReader.prototype.readBRTag=function(body){
+    var $ = this.$;
+    if(body.children("div ,p, li").length ){
+        console.warn("BR Tag contents have Div, P or li");
+        console.log(body.html());
+    }
+    body.contents().filter(function() {
+        //console.log();
+        return this.nodeType == 3 ;//&&this.parentNode.tagName != "P";
+    }).wrap('<div class="textContentDiv"></div>').end().filter('br').remove();
+    this.readNoBRTag(body);
 
-     console.log(body.html());
-    body.children("div.textContentDiv").each(function(){
+}
+MyReader.prototype.readNoBRTag= function(body){
+    var $ = this.$;
+    body.children().each(function(){
         var child = this,text = $.trim(child.textContent);
-           if(text)console.log(text);
+        if(text)console.log(text);
     })
 }
+/*
 MyReader.prototype.readPgcontent = function(body){
     var content = body.get(0);
     var array = content.children;
@@ -151,13 +165,14 @@ MyReader.prototype.readPgcontent = function(body){
     }
     if (endContent)console.log(endContent);
 }
+*/
 MyReader.prototype.readTitle = function(body){
-    if(body.length<1)return;
-    return body.textContent;
+    if(body.length)
+    return body.html();
 }
 MyReader.prototype.readInfo = function(body){
-    if(body.length<1)return;
-    var dateReg = /日期:[\d\w]+浏览/;
+    if(!body.length)return;
+    var dateReg = /\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}/;
     var matches = body.text().match(dateReg),res;
     if(matches){
         res = matches[0];
